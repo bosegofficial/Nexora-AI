@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexora AI</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(12, 25, 43, 0.86);
+      --panel-2: #0d1b2e;
+      --text: #eef6ff;
+      --muted: #91a5bc;
+      --accent: #65d8ff;
+      --accent-2: #8b7cff;
+      --border: rgba(255,255,255,.09);
+      --user: #1a3554;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(101,216,255,.13), transparent 28%),
+        radial-gradient(circle at 85% 85%, rgba(139,124,255,.15), transparent 30%),
+        var(--bg);
+      display: grid;
+      place-items: center;
+      padding: 22px;
+    }
+
+    .app {
+      width: min(980px, 100%);
+      height: min(780px, calc(100vh - 44px));
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 80px rgba(0,0,0,.35);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand { display: flex; align-items: center; gap: 13px; }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      font-weight: 800;
+      color: #06101c;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 8px 24px rgba(101,216,255,.2);
+    }
+
+    h1 { margin: 0; font-size: 20px; letter-spacing: -.4px; }
+    .tagline { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+
+    .status {
+      color: #aeeecb;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #48dc91;
+      box-shadow: 0 0 12px #48dc91;
+    }
+
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .welcome {
+      max-width: 650px;
+      margin: auto;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .welcome h2 { color: var(--text); margin-bottom: 8px; }
+    .message { display: flex; }
+    .message.user { justify-content: flex-end; }
+    .bubble {
+      max-width: 78%;
+      padding: 13px 16px;
+      border-radius: 18px;
+      line-height: 1.55;
+      font-size: 14px;
+      white-space: pre-wrap;
+      border: 1px solid var(--border);
+    }
+
+    .assistant .bubble {
+      background: var(--panel-2);
+      border-top-left-radius: 6px;
+    }
+
+    .user .bubble {
+      background: var(--user);
+      border-top-right-radius: 6px;
+    }
+
+    form {
+      padding: 16px 20px 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(5, 14, 26, .55);
+    }
+
+    .composer {
+      display: flex;
+      gap: 10px;
+      padding: 7px;
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: rgba(255,255,255,.035);
+    }
+
+    textarea {
+      flex: 1;
+      resize: none;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 10px 12px;
+      font: inherit;
+      min-height: 42px;
+      max-height: 120px;
+    }
+
+    textarea::placeholder { color: #71869d; }
+
+    button {
+      align-self: flex-end;
+      border: 0;
+      border-radius: 14px;
+      padding: 11px 17px;
+      cursor: pointer;
+      color: #06101c;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .hint { text-align: center; color: #637991; font-size: 11px; margin-top: 8px; }
+
+    @media (max-width: 650px) {
+      body { padding: 0; }
+      .app { height: 100vh; min-height: 100vh; border-radius: 0; }
+      #chat { padding: 18px; }
+      .bubble { max-width: 90%; }
+      .status { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">N</div>
+        <div>
+          <h1>Nexora AI</h1>
+          <p class="tagline">Modern technology & professional learning assistant</p>
+        </div>
+      </div>
+      <div class="status"><span class="dot"></span> AI Online</div>
+    </header>
+
+    <section id="chat">
+      <div class="welcome" id="welcome">
+        <h2>Welcome to Nexora AI</h2>
+        <p>Ask about programming, AI, web development, software engineering, or other modern technology learning topics.</p>
+      </div>
+    </section>
+
+    <form id="chatForm">
+      <div class="composer">
+        <textarea id="message" rows="1" placeholder="Ask Nexora AI something..." autocomplete="off"></textarea>
+        <button id="send" type="submit">Send</button>
+      </div>
+      <div class="hint">Nexora AI answers only within its modern technology and professional learning scope.</div>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById("chatForm");
+    const input = document.getElementById("message");
+    const chat = document.getElementById("chat");
+    const send = document.getElementById("send");
+    const welcome = document.getElementById("welcome");
+
+    function addMessage(text, role) {
+      if (welcome) welcome.remove();
+
+      const row = document.createElement("div");
+      row.className = `message ${role}`;
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
+
+      row.appendChild(bubble);
+      chat.appendChild(row);
+      chat.scrollTop = chat.scrollHeight;
+      return bubble;
+    }
+
+    input.addEventListener("input", () => {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 120) + "px";
+    });
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const message = input.value.trim();
+      if (!message || send.disabled) return;
+
+      addMessage(message, "user");
+      input.value = "";
+      input.style.height = "auto";
+      send.disabled = true;
+      send.textContent = "…";
+
+      const thinking = addMessage("Thinking...", "assistant");
+
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        const data = await response.json();
+        thinking.textContent = data.reply || data.error || "Something went wrong.";
+      } catch {
+        thinking.textContent = "Unable to connect to Nexora AI right now.";
+      } finally {
+        send.disabled = false;
+        send.textContent = "Send";
+        input.focus();
+      }
+    });
+  </script>
+</body>
+</html>
